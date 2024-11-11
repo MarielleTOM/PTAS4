@@ -1,13 +1,15 @@
-const { PrismaClient } = require("@prisma/client")
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 class AuthController{
-    static async cadastro(){
+    static async cadastro(req, res) {}
 
-    }
-    static async login(){
-
+    static async login(req, res) {
+        res.json({
+            email: req.email,
+            senha: req.senha,
+        });
     }
 }
 
-module.exports=
+module.exports = AuthController;
