@@ -8,21 +8,21 @@ class AuthController{
         const {nome, email, password} = req.body;
 
 if (!nome || nome.length < 6) {
-    return res.json({
+    return res.status(422).json({
         erro: true,
         mensagem: "O nome deve ter pelo menos 6  caracteres.",
     });
 }
 
 if (!email || email.length < 10) {
-    return res.json({
+    return res.status(422).json({
         erro: true,
         mensagem: "O email deve ter pelo menos 10  caracteres.",
     });
 }
 
 if (!password || password.length < 8) {
-    return res.json({
+    return res.status(422).json({
         erro: true,
         mensagem: "A senha deve ter pelo menos 8  caracteres.",
     });
@@ -35,7 +35,7 @@ const existe = await prisma.usuario.count({
 });
 
 if(existe != 0){
-    return res.json({
+    return res.status(422).json({
         erro: true,
         mensagem: "Já existe um usuário cadastrado com este e-mail.",
     });
@@ -54,12 +54,20 @@ const usuario = await prisma.usuario.create({
     },
 });
 
-return res.json({
+console.log(JSON.stringify(usuario));
+
+const token = jwt.sign({ id: usuario.id }, process.env.
+    SECRET_KEY, {
+ expiresIn: "1h",
+});
+
+return res.status(201).json({
  erro: false,
- mensagem: "Usuário cadastrado com sucesso!"
+ mensagem: "Usuário cadastrado com sucesso!",
+ token: token,
 });
 } catch (error) {
-    return res.json({
+    return res.status(500).json({
         erro: true,
         mensagem: "Ocorreu um erro, tente novamente mais tarde!" + error,
        });
@@ -77,7 +85,7 @@ return res.json({
         });
 
         if (!usuario) {
-            return res.json({
+            return res.status(422).json({
                 erro: true,
                 mensagem: "Usuário não encontrado.",
             });
@@ -86,18 +94,21 @@ return res.json({
 const senhaCorreta = bcryptjs.compareSync(password, usuario.password);
  
 if (!senhaCorreta) {
-    return res.json({
+    return res.status(422).json({
         erro: true,
         mensagem: "Senha incorreta.",
     });
-const token = jwt.sign({ id: usuario.id }, process.env.SECRET_KEY, )
+}
+const token = jwt.sign({ id: usuario.id }, process.env.
+    SECRET_KEY, {
  expiresIn: "1h",
-};
-res.json({
-    erro: false,
-    mensagem: "Autenticação realizada com sucesso!"
+});
 
-})
+res.status(200).json({
+    erro: false,
+    mensagem: "Autenticação realizada com sucesso!",
+    token: token,
+});
  }
 }
 
