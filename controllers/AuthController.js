@@ -108,6 +108,23 @@ res.status(200).json({
     token: token,
 });
  }
+
+ static async verificaAutenticacao(req, res, next){
+    const authorization = req.headers["authorizations"];
+
+    const token= authorization && authorization.split (" ")[1];
+    if (!token){
+        return res.status(422).json({message:"Token não encontrado!"});
+    }
+    jwt.verify(token, process.env.SECRET_KEY, (err, payload)=>{
+        if (err){
+            return res.status(401).json({msg: "Token inválido!"})
+        }
+
+        req.usuarioId = payload.id;
+        next();
+    })
+ }
    }
 
 
