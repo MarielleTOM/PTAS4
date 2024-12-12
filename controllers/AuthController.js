@@ -110,9 +110,9 @@ res.status(200).json({
  }
 
  static async verificaAutenticacao(req, res, next){
-    const authorization = req.headers["authorizations"];
-
-    const token= authorization && authorization.split (" ")[1];
+    const authHeader = req.headers["authorization"];
+    
+    const token= authHeader && authHeader.split (" ")[1];
     if (!token){
         return res.status(422).json({message:"Token não encontrado!"});
     }
