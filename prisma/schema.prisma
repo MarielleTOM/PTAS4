@@ -13,10 +13,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Usuario{
-  id Int @id @default(autoincrement())
-  nome String
-  email String @unique
+model Usuario {
+  id       Int       @id @default(autoincrement())
+  nome     String
+  email    String    @unique
   password String
-  tipo String
+  tipo     String
+  reservas Reserva[] // Relacionamento com o modelo Reserva
+}
+
+model Mesa {
+  id        Int       @id @default(autoincrement())
+  codigo    String
+  n_lugares Int
+  reservas  Reserva[] // Relacionamento com o modelo Reserva
+}
+
+model Reserva {
+  id        Int      @id @default(autoincrement())
+  data      DateTime
+  n_pessoas Int
+
+  status Boolean @default(true)
+  //true: reserva ativa | false: reserva cancelada
+
+  usuarioId Int
+  usuario   Usuario @relation(fields: [usuarioId], references: [id]) // Relacionamento com Usuario
+
+  mesaId Int
+  mesa   Mesa @relation(fields: [mesaId], references: [id]) // Relacionamento com Mesa
 }
