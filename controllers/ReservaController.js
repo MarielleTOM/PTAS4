@@ -11,7 +11,7 @@ class ReservaController {
                     erro: true,
                     mensagem: "Os campos 'mesaId', 'n_pessoas' e 'data' são obrigatórios.",
                 });
-            }
+            } 
 
             const dataReserva = new Date(data);
             const hoje = new Date();
