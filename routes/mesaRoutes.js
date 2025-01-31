@@ -6,7 +6,7 @@ const AuthController = require("../controllers/AuthController");
 // Cadastrar Nova Mesa (restrito ao adm)
 router.post(
   "/novo",
-  AuthController.autenticar,
+  AuthController.verificaAutenticacao,
   AuthController.verificaPermissaoAdm,
   MesaController.novaMesa
 );
