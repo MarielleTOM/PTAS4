@@ -4,6 +4,20 @@ class MesaController {
   static async novaMesa(req, res) {
     try {
       const { codigo, n_lugares } = req.body;
+
+      if (!codigo || codigo.length < 2) {
+        return res.status(422).json({
+            erro: true,
+            mensagem: "O código da mesa deve ter pelo menos 2 caracteres.",
+        });
+    }
+
+    if (!n_lugares || isNaN(n_lugares) || n_lugares <= 0) {
+        return res.status(422).json({
+            erro: true,
+            mensagem: "O número de lugares deve ser um número maior que zero.",
+        });
+    }
       
       if (!codigo || !n_lugares) {
         return res.status(400).json({ mensagem: "Os campos 'codigo' e 'n_lugares' são obrigatórios." });
