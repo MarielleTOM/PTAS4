@@ -29,6 +29,6 @@ app.get("/pedidos/55845125", (req, res) => { });
 
 app.get("/meu-perfil", (req, res) => { });
 
-
-
-app.listen(8000);
+app.listen(8000, () => {
+    console.log("Servidor rodando na porta 8000");
+});
